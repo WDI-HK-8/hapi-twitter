@@ -21,6 +21,8 @@
   },
   "homepage": "https://github.com/WDI-HK-7/hapi-twitter",
   "dependencies": {
-    "hapi": "^8.4.0"
+    "hapi": "^8.4.0",
+    "joi": "^5.1.0",
+    "hapi-mongodb": "~3.0"
   }
 }
