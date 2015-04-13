@@ -21,8 +21,10 @@
   },
   "homepage": "https://github.com/WDI-HK-7/hapi-twitter",
   "dependencies": {
+    "bcrypt": "^0.8.2",
     "hapi": "^8.4.0",
-    "joi": "^5.1.0",
-    "hapi-mongodb": "~3.0"
+    "hapi-auth-basic": "^2.0.0",
+    "hapi-mongodb": "~3.0",
+    "joi": "^5.1.0"
   }
 }

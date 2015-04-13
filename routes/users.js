@@ -1,4 +1,5 @@
 var Joi = require('joi');
+var Bcrypt = require('bcrypt');
 
 exports.register = function(server, options, next) {
   server.route([
@@ -47,15 +48,22 @@ exports.register = function(server, options, next) {
 
           var user = {
             "username": request.payload.user.username,
-            "email": request.payload.user.email
+            "password": request.payload.user.password
           };
 
-          db.collection('users').insert(user, function(err, doc) {
-            if (err) {
-              return reply('Internal MongoDB error', err);
-            } else {
-              reply(doc);
-            }
+          Bcrypt.genSalt(10, function(err, salt) {
+            Bcrypt.hash(user.password, salt, function(err, hash) {
+              user.password = hash;
+
+              // Store hash in your password DB. 
+              db.collection('users').insert(user, function(err, doc) {
+                if (err) {
+                  return reply('Internal MongoDB error', err);
+                } else {
+                  reply(doc);
+                }
+              });
+            });
           });
         },
         validate: {
@@ -64,7 +72,7 @@ exports.register = function(server, options, next) {
               // Required, Limited to 20 chars
               // TODO: Make sure username and email are unique
               username: Joi.string().max(20).required(),
-              email: Joi.string().required()
+              password: Joi.string().max(20).required()
             }
           }
         }
