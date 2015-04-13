@@ -1,0 +1,26 @@
+{
+  "name": "hapi-twitter",
+  "version": "0.0.1",
+  "description": "This is the backend built for Twitter using Hapi.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:WDI-HK-7/hapi-twitter.git"
+  },
+  "keywords": [
+    "Hapi",
+    "Twitter"
+  ],
+  "author": "Harry Chen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WDI-HK-7/hapi-twitter/issues"
+  },
+  "homepage": "https://github.com/WDI-HK-7/hapi-twitter",
+  "dependencies": {
+    "hapi": "^8.4.0"
+  }
+}
