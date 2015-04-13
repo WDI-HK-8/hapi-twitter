@@ -22,17 +22,10 @@ server.register({
 }, function (err) { });
 
 var plugins = [
-  {
-    register: require('./routes/tweets.js')
-  },
-  {
-    register: require('./routes/users.js')
-  },
-  {
-    register: require('./routes/sessions.js')
-  },
-  {
-    register: require('hapi-mongodb'),
+  { register: require('./routes/tweets.js') },
+  { register: require('./routes/users.js') },
+  { register: require('./routes/sessions.js') },
+  { register: require('hapi-mongodb'),
     options: {
       "url": process.env.MONGOLAB_URI || "mongodb://127.0.0.1:27017/hapi-twitter",
       "settings": {

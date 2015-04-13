@@ -9,13 +9,11 @@ exports.register = function(server, options, next) {
       path: '/users',
       handler: function(request, reply) {
         var db = request.server.plugins['hapi-mongodb'].db;
-        
-        db.collection('users').find().toArray(function(err, result) {
-          if (err) {
-            return reply('Internal MongoDB error', err);
-          }
 
-          reply(result);
+        db.collection('users').find().toArray(function(err, users) {
+          if (err) { return reply('Internal MongoDB error', err); }
+
+          reply(users);
         });
       }
     },
@@ -28,13 +26,11 @@ exports.register = function(server, options, next) {
 
         var db = request.server.plugins['hapi-mongodb'].db;
         var ObjectId = request.server.plugins['hapi-mongodb'].ObjectID;
-        
-        db.collection('users').findOne({ "username": username }, function(err, result) {
-            if (err) {
-              return reply('Internal MongoDB error', err); 
-            }
 
-            reply(result);
+        db.collection('users').findOne({ "username": username }, function(err, user) {
+            if (err) { return reply('Internal MongoDB error', err); }
+
+            reply(user);
         })
       }
     },
@@ -47,32 +43,40 @@ exports.register = function(server, options, next) {
           var db = request.server.plugins['hapi-mongodb'].db;
 
           var user = {
-            "username": request.payload.user.username,
-            "password": request.payload.user.password
+            username: request.payload.user.username,
+            email:    request.payload.user.email,
+            password: request.payload.user.password
           };
 
-          Bcrypt.genSalt(10, function(err, salt) {
-            Bcrypt.hash(user.password, salt, function(err, hash) {
-              user.password = hash;
+          var uniqUserQuery = { $or: [{username: user.username}, {email: user.email}] };
 
-              // Store hash in your password DB. 
-              db.collection('users').insert(user, function(err, doc) {
-                if (err) {
-                  return reply('Internal MongoDB error', err);
-                } else {
-                  reply(doc);
-                }
+          db.collection('users').count(uniqUserQuery, function(err, userExist){
+            if (userExist) {
+              return reply('Error: Username already exist', err);
+            }
+              Bcrypt.genSalt(10, function(err, salt) {
+                Bcrypt.hash(user.password, salt, function(err, hash) {
+                  user.password = hash;
+
+                  // Store hash in your password DB.
+                  db.collection('users').insert(user, function(err, doc) {
+                    if (err) { return reply('Internal MongoDB error', err); }
+
+                    reply(doc);
+                  });
+                });
               });
-            });
+            }
           });
+
         },
         validate: {
           payload: {
             user: {
               // Required, Limited to 20 chars
-              // TODO: Make sure username and email are unique
               username: Joi.string().max(20).required(),
-              password: Joi.string().max(20).required()
+              email:    Joi.string().email().max(50).required(),
+              password: Joi.string().min(5).max(20).required()
             }
           }
         }

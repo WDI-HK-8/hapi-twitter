@@ -10,19 +10,18 @@ exports.register = function(server, options, next) {
       handler: function(request, reply) {
         var db = request.server.plugins['hapi-mongodb'].db;
 
+        // TODO: Add email authentication (optional)
         var user = {
           "username": request.payload.user.username,
           "password": request.payload.user.password
         };
 
-        db.collection('users').findOne({ "username": user.username }, function(err, result) {
-            if (err) {
-              return reply('Internal MongoDB error', err); 
-            }
+        db.collection('users').findOne({ "username": user.username }, function(err, userMongo) {
+            if (err) { return reply('Internal MongoDB error', err); }
 
-            Bcrypt.compare(user.password, result.password, function(err, res) {
+            Bcrypt.compare(user.password, userMongo.password, function(err, res) {
               if (res) {
-                
+
                 // if password matches, please authenticate user and add to cookie
                 Bcrypt.genSalt(10, function(err, salt) {
                   Bcrypt.hash('B4c0/\/', salt, function(err, hash) {
@@ -30,10 +29,11 @@ exports.register = function(server, options, next) {
                     return reply("Signed in");
                   });
                 });
+
               } else {
-                reply({
-                  message: "Not authorized"
-                });
+
+                reply({ message: "Not authorized" });
+
               };
             });
         })

@@ -8,13 +8,11 @@ exports.register = function(server, options, next) {
       path: '/tweets',
       handler: function(request, reply) {
         var db = request.server.plugins['hapi-mongodb'].db;
-        
-        db.collection('tweets').find().toArray(function(err, result) {
-          if (err) {
-            return reply('Internal MongoDB error', err);
-          }
 
-          reply(result);
+        db.collection('tweets').find().toArray(function(err, tweets) {
+          if (err) { return reply('Internal MongoDB error', err); }
+
+          reply(tweets);
         });
       }
     },
@@ -27,13 +25,11 @@ exports.register = function(server, options, next) {
 
         var db = request.server.plugins['hapi-mongodb'].db;
         var ObjectId = request.server.plugins['hapi-mongodb'].ObjectID;
-        
-        db.collection('tweets').findOne({ "_id": ObjectId(tweet_id)}, function(err, result) {
-            if (err) {
-              return reply('Internal MongoDB error', err); 
-            }
 
-            reply(result);
+        db.collection('tweets').findOne({ "_id": ObjectId(tweet_id)}, function(err, tweet) {
+          if (err) { return reply('Internal MongoDB error', err); }
+
+          reply(tweet);
         })
       }
     },
@@ -45,16 +41,12 @@ exports.register = function(server, options, next) {
         handler: function(request, reply) {
           var db = request.server.plugins['hapi-mongodb'].db;
 
-          var tweet = {
-            "message": request.payload.tweet.message
-          };
+          var tweet = { "message": request.payload.tweet.message };
 
-          db.collection('tweets').insert(tweet, function(err, doc) {
-            if (err) {
-              return reply('Internal MongoDB error', err);
-            } else {
-              reply(doc);
-            }
+          db.collection('tweets').insert(tweet, function(err, writeResult) {
+            if (err) { return reply('Internal MongoDB error', err); }
+
+            reply(writeResult);
           });
         },
         validate: {
@@ -77,12 +69,10 @@ exports.register = function(server, options, next) {
         var db = request.server.plugins['hapi-mongodb'].db;
         var ObjectId = request.server.plugins['hapi-mongodb'].ObjectID;
 
-        db.collection('tweets').remove({ "_id": ObjectId(tweet_id) }, function(err, result) {
-            if (err) {
-              return reply('Internal MongoDB error', err);
-            }
+        db.collection('tweets').remove({ "_id": ObjectId(tweet_id) }, function(err, writeResult) {
+            if (err) { return reply('Internal MongoDB error', err); }
 
-            reply(result);
+            reply(writeResult);
         });
       }
     }

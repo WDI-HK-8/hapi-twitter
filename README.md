@@ -1,17 +1,42 @@
-Twitter Back-end built with Hapi.js and MongoDB
--
+# Twitter Back-end built with Hapi.js and MongoDB
 
-- [Tweets](#tweets)
-- [Users](#users)
-- [Sessions](#sessions)
+## Installation & Running
+
+```
+$ npm install
+$ node .
+```
+
+## API Documentation
+
+### [Tweets](#tweets)
+| Method | Path | Description |
+|--|--|--|
+| GET | /tweets | List all tweets
+| GET | /tweets/{id} | Retrieve a tweet
+| POST | /tweets | Create a new tweet
+| DELETE | /tweets/{id} | Delete a Tweet
+
+### [Users](#users)
+| Method | Path | Description |
+|--|--|--|
+| GET | /users | List all users
+| GET | /users/{username} | Retrieve a user
+| POST | /users | Create a new user
+
+### [Sessions](#sessions)
+| Method | Path | Description
+|--|--|--|
+| Method | Path | Description
+
 
 <a name="tweets"></a>
 ## Tweets
+### List all Tweets
 
+> [GET] /tweets
 
-##### List all Tweets
-    > [GET] /tweets
-- Response
+**Response**
 ```js
 [
     {
@@ -29,10 +54,10 @@ Twitter Back-end built with Hapi.js and MongoDB
 ]
 ```
 
+### Retrieve a Tweet
+> [GET] /tweets/{id}
 
-##### Retrieve a Tweet
-    > [GET] /tweets/{id}
-- Response
+**Response**
 ```js
 {
     _id: "552ba1b717bfb46ce99fb379",
@@ -40,12 +65,12 @@ Twitter Back-end built with Hapi.js and MongoDB
 }
 ```
 
-
-##### Create a new Tweet
-    > [POST] /tweets
+### Create a new Tweet
+> [POST] /tweets
 - Parameters
     - message (required, string, max chars: 140)
-- Response
+
+**Response**
 ```js
 {
     "ok": 1,
@@ -53,10 +78,10 @@ Twitter Back-end built with Hapi.js and MongoDB
 }
 ```
 
+### Delete a Tweet
+> [DELETE] /tweets/{id}
 
-##### Delete a Tweet
-    > [DELETE] /tweets/{id}
-- Response
+**Response**
 ```js
 {
     "ok": 1,
@@ -67,11 +92,10 @@ Twitter Back-end built with Hapi.js and MongoDB
 <a name="users"></a>
 ## Users
 
+### List all Users
+> [GET] /users
 
-##### List all Users
-    > [GET] /users
-    > [GET] /users/{username}
-- Response
+**Response**
 ```js
 [
     {
@@ -87,10 +111,10 @@ Twitter Back-end built with Hapi.js and MongoDB
 ]
 ```
 
+### Retrieve a User
+> [GET] /users/{username}
 
-##### Retrieve a User
-    > [GET] /users/{username}
-- Response
+**Response**
 ```js
 {
     _id: "552ba10e74bfd2efe6135122",
@@ -99,14 +123,14 @@ Twitter Back-end built with Hapi.js and MongoDB
 }
 ```
 
-
-##### Create a new Users
-    > [POST] /users
+### Create a new Users
+> [POST] /users
 
 - Parameters
     - username (required, string, max chars: 20)
     - password (required, string, max chars: 20)
-- Response
+
+**Response**
 ```js
 {
     "ok": 1,
@@ -114,14 +138,7 @@ Twitter Back-end built with Hapi.js and MongoDB
 }
 ```
 
-
 <a name="sessions"></a>
 ## Sessions
 
-
-##### Create a new Session
-
-
-
-
-
+### Create a new Session
