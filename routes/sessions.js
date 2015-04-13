@@ -21,9 +21,26 @@ exports.register = function(server, options, next) {
             }
 
             Bcrypt.compare(user.password, result.password, function(err, res) {
-              reply(res);
+              if (res) {
+                
+                // if password matches, please authenticate user and add to cookie
+                Bcrypt.genSalt(10, function(err, salt) {
+                  Bcrypt.hash('B4c0/\/', salt, function(err, hash) {
+                    request.session.set('example', { key: hash });
+                    return reply("Signed in");
+                  });
+                });
+              };
             });
         })
+      }
+    },
+    {
+      method: 'GET',
+      path: '/temp',
+      handler: function(request, reply) {
+        var example = request.session.get('example');
+        reply(example.key);
       }
     }
   ]);

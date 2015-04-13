@@ -9,6 +9,18 @@ server.connection({
   }
 });
 
+var options = {
+  cookieOptions: {
+    password: 'password',
+    isSecure: false
+  }
+};
+
+server.register({
+  register: require('yar'),
+  options: options
+}, function (err) { });
+
 var plugins = [
   {
     register: require('./routes/tweets.js')
