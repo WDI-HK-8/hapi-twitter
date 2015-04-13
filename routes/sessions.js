@@ -30,6 +30,10 @@ exports.register = function(server, options, next) {
                     return reply("Signed in");
                   });
                 });
+              } else {
+                reply({
+                  message: "Not authorized"
+                });
               };
             });
         })
