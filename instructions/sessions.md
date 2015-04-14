@@ -1,6 +1,10 @@
 ## STEPS BY STEP GUIDE
 #### Sessions
 
+
+#### STEP 0: Install Jar
+- Jar is a hapi session plugin and cookie
+
 ```
 $ npm install yar --save
 ```
