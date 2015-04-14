@@ -5,7 +5,6 @@ module.exports.authenticated = function(request, callback) {
   var db = request.server.plugins['hapi-mongodb'].db;
 
   if (!session) {
-    // return reply("no");
     return callback({
       "authenticated": false,
       "message": "Unauthorized"

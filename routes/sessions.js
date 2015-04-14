@@ -21,6 +21,10 @@ exports.register = function(server, options, next) {
         db.collection('users').findOne({ "username": user.username }, function(err, userMongo) {
             if (err) { return reply('Internal MongoDB error', err); }
 
+            if (userMongo === null) {
+              return reply({ "message": "User doesn't exist" });
+            }
+
             Bcrypt.compare(user.password, userMongo.password, function(err, res) {
               if (res) {
 
@@ -29,7 +33,8 @@ exports.register = function(server, options, next) {
                   Bcrypt.hash('B4c0/\/', salt, function(err, hash) {
                     var db = request.server.plugins['hapi-mongodb'].db;
                     var newSession = {
-                      "session_id": hash
+                      "session_id": hash,
+                      "user_id": userMongo._id
                     };
 
                     db.collection('sessions').insert(newSession, function(err, result) {
@@ -56,6 +61,24 @@ exports.register = function(server, options, next) {
       handler: function(request, reply) {
         Auth.authenticated(request, function(result) {
           reply(result);
+        });
+      }
+    },
+    {
+      method: 'DELETE',
+      path: '/sessions',
+      handler: function(request, reply) {
+        var session = request.session.get('hapi_twitter_session');
+        var db = request.server.plugins['hapi-mongodb'].db;
+
+        if (!session) { 
+          return reply({"message": "Already logged out"});
+        }
+
+        db.collection('sessions').remove({ "session_id": session.session_hash }, function(err, writeResult) {
+          if (err) { return reply('Internal MongoDB error', err); }
+
+          reply(writeResult);
         });
       }
     }
