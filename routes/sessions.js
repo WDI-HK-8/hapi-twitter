@@ -38,16 +38,13 @@ exports.register = function(server, options, next) {
                       }
 
                       request.session.set('hapi_twitter_session', { session_hash: hash });
-                      return reply("Signed in");
+                      return reply({ "message:": "Authenticated" });
                     });
 
                   });
                 });
-
               } else {
-
                 reply({ message: "Not authorized" });
-
               };
             });
         })
@@ -55,10 +52,10 @@ exports.register = function(server, options, next) {
     },
     {
       method: 'GET',
-      path: '/temp',
+      path: '/authenticated',
       handler: function(request, reply) {
-        Auth.authenticated(request, function(res) {
-          reply(res);
+        Auth.authenticated(request, function(result) {
+          reply(result);
         });
       }
     }

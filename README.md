@@ -11,23 +11,24 @@ $ node .
 
 ### [Tweets](#tweets)
 | Method | Path | Description |
-|--|--|--|
-| GET | /tweets | List all tweets
-| GET | /tweets/{id} | Retrieve a tweet
-| POST | /tweets | Create a new tweet
-| DELETE | /tweets/{id} | Delete a Tweet
+|---|---|---|
+| GET | /tweets | List all tweets |
+| GET | /tweets/{id} | Retrieve a tweet |
+| POST | /tweets | Create a new tweet (require user authentication) |
+| DELETE | /tweets/{id} | Delete a Tweet (require user authentication) |
 
 ### [Users](#users)
 | Method | Path | Description |
-|--|--|--|
-| GET | /users | List all users
-| GET | /users/{username} | Retrieve a user
-| POST | /users | Create a new user
+|---|---|---|
+| GET | /users | List all users |
+| GET | /users/{username} | Retrieve a user |
+| POST | /users | Create a new user |
 
 ### [Sessions](#sessions)
-| Method | Path | Description
-|--|--|--|
-| Method | Path | Description
+| Method | Path | Description |
+|---|---|---|
+| POST | /sessions | Create a new session |
+| GET | /authenticated | Check if you are authenticated |
 
 
 <a name="tweets"></a>
@@ -67,6 +68,7 @@ $ node .
 
 ### Create a new Tweet
 > [POST] /tweets
+
 - Parameters
     - message (required, string, max chars: 140)
 
@@ -142,3 +144,33 @@ $ node .
 ## Sessions
 
 ### Create a new Session
+> [POST] /sessions
+ 
+- Parameters
+    - username (required, string, max chars: 20)
+    - password (required, string, max chars: 20)
+
+**Response**
+```js
+{
+    "message:": "Authenticated"
+}
+```
+
+### Check if you are authenticated
+> [GET] /authenticated
+
+**Response**
+```js
+// if authenticated
+{
+    "authenticated": true,
+    "message": "Authorized"
+}
+
+// if not authenticated
+{
+    "authenticated": false,
+    "message": "Unauthorized"
+}
+```

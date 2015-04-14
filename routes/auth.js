@@ -6,10 +6,23 @@ module.exports.authenticated = function(request, callback) {
 
   if (!session) {
     // return reply("no");
-    return callback(false);
+    return callback({
+      "authenticated": false,
+      "message": "Unauthorized"
+    });
   }
 
   db.collection('sessions').findOne({ "session_id": session.session_hash }, function(err, result) {
-    return callback(!err);
+    if (result === null) {
+      return callback({
+        "authenticated": false,
+        "message": "Unauthorized"
+      });
+    } else {
+      return callback({
+        "authenticated": true,
+        "message": "Authorized"
+      });
+    }
   });
 };

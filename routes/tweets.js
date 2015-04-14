@@ -1,4 +1,5 @@
 var Joi = require('joi');
+var Auth = require('./auth');
 
 exports.register = function(server, options, next) {
   server.route([
@@ -39,14 +40,20 @@ exports.register = function(server, options, next) {
       path: '/tweets',
       config: {
         handler: function(request, reply) {
-          var db = request.server.plugins['hapi-mongodb'].db;
+          Auth.authenticated(request, function(result) {
+            if (result.authenticated) {
+              var db = request.server.plugins['hapi-mongodb'].db;
 
-          var tweet = { "message": request.payload.tweet.message };
+              var tweet = { "message": request.payload.tweet.message };
 
-          db.collection('tweets').insert(tweet, function(err, writeResult) {
-            if (err) { return reply('Internal MongoDB error', err); }
+              db.collection('tweets').insert(tweet, function(err, writeResult) {
+                if (err) { return reply('Internal MongoDB error', err); }
 
-            reply(writeResult);
+                reply(writeResult);
+              });
+            } else {
+              reply(result.message);
+            }
           });
         },
         validate: {
@@ -64,15 +71,21 @@ exports.register = function(server, options, next) {
       method: 'DELETE',
       path: '/tweets/{id}',
       handler: function(request, reply) {
-        var tweet_id = encodeURIComponent(request.params.id);
+        Auth.authenticated(request, function(result) {
+          if (result.authenticated) {
+            var tweet_id = encodeURIComponent(request.params.id);
 
-        var db = request.server.plugins['hapi-mongodb'].db;
-        var ObjectId = request.server.plugins['hapi-mongodb'].ObjectID;
+            var db = request.server.plugins['hapi-mongodb'].db;
+            var ObjectId = request.server.plugins['hapi-mongodb'].ObjectID;
 
-        db.collection('tweets').remove({ "_id": ObjectId(tweet_id) }, function(err, writeResult) {
-          if (err) { return reply('Internal MongoDB error', err); }
+            db.collection('tweets').remove({ "_id": ObjectId(tweet_id) }, function(err, writeResult) {
+              if (err) { return reply('Internal MongoDB error', err); }
 
-          reply(writeResult);
+              reply(writeResult);
+            });
+          } else {
+            reply(result.message);
+          }
         });
       }
     }

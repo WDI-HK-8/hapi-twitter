@@ -11,7 +11,7 @@ server.connection({
 
 var options = {
   cookieOptions: {
-    password: 'password',
+    password: process.env.COOKIE_PASSWORD || 'password',
     isSecure: false
   }
 };
