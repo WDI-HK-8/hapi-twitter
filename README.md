@@ -203,3 +203,20 @@ $ git push heroku master
     "message": "Unauthorized"
 }
 ```
+
+### Delete a Session (Logout)
+> [DELETE] /sessions
+
+**Response**
+```js
+// if already logged out
+{
+    "message": "Already logged out"
+}
+
+// if successfully logged out
+{
+    "ok": 1,
+    "n": 1
+}
+```

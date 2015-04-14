@@ -75,7 +75,7 @@ exports.register = function(server, options, next) {
         var db = request.server.plugins['hapi-mongodb'].db;
 
         if (!session) { 
-          return reply({"message": "Already logged out"});
+          return reply({ "message": "Already logged out" });
         }
 
         db.collection('sessions').remove({ "session_id": session.session_hash }, function(err, writeResult) {
