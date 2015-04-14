@@ -19,6 +19,7 @@ $ git push heroku master
 | Method | Path | Description |
 |---|---|---|
 | GET | /tweets | List all tweets |
+| GET | /users/{username}/tweets | List all Tweets of a specific user |
 | GET | /tweets/{id} | Retrieve a tweet |
 | POST | /tweets | Create a new tweet (require user authentication) |
 | DELETE | /tweets/{id} | Delete a Tweet (require user authentication) |
@@ -35,6 +36,7 @@ $ git push heroku master
 |---|---|---|
 | POST | /sessions | Create a new session |
 | GET | /authenticated | Check if you are authenticated |
+| DELETE | /sessions | Delete a Session (Logout) |
 
 
 <a name="tweets"></a>
