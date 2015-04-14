@@ -7,6 +7,12 @@ $ npm install
 $ node .
 ```
 
+## Deploy on Heroku
+```
+$ heroku create
+$ git push heroku master
+```
+
 ## API Documentation
 
 ### [Tweets](#tweets)
