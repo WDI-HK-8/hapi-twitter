@@ -42,15 +42,38 @@ $ node .
 [
     {
         _id: "552ba164ba5d0917e86e0fa9",
-        message: "Today is awesome!"
+        message: "Today is awesome!",
+        user_id: "ABC"
     },
     {
         _id: "552ba1b717bfb46ce99fb379",
-        message: "Fork the Repo"
+        message: "Fork the Repo",
+        user_id: "ABC"
     },
     {
         _id: "552ba1c517bfb46ce99fb37a",
-        message: "Did you check out Apple Watch?"
+        message: "Did you check out Apple Watch?",
+        user_id: "EFG"
+    }
+]
+```
+
+### List all Tweets of a specific user
+
+> [GET] /users/{username}/tweets
+
+**Response**
+```js
+[
+    {
+        _id: "552ba164ba5d0917e86e0fa9",
+        message: "Today is awesome!",
+        user_id: "ABC"
+    },
+    {
+        _id: "552ba1b717bfb46ce99fb379",
+        message: "Fork the Repo",
+        user_id: "ABC"
     }
 ]
 ```

@@ -18,6 +18,25 @@ exports.register = function(server, options, next) {
       }
     },
     {
+      // Retrieve all tweets by a specific user
+      method: 'GET',
+      path: '/users/{username}/tweets',
+      handler: function(request, reply) {
+        var db = request.server.plugins['hapi-mongodb'].db;
+        var username = encodeURIComponent(request.params.username);
+
+        db.collection('users').findOne({ "username": username }, function(err, user) {
+          if (err) { return reply('Internal MongoDB error', err); }
+
+          db.collection('tweets').find({ "user_id": user._id }).toArray(function(err, tweets) {
+            if (err) { return reply('Internal MongoDB error', err); }
+
+            reply(tweets);
+          });
+        })
+      }
+    },
+    {
       // Retrieve one tweet
       method: 'GET',
       path: '/tweets/{id}',
@@ -43,8 +62,13 @@ exports.register = function(server, options, next) {
           Auth.authenticated(request, function(result) {
             if (result.authenticated) {
               var db = request.server.plugins['hapi-mongodb'].db;
+              var session = request.session.get('hapi_twitter_session');
+              var ObjectId = request.server.plugins['hapi-mongodb'].ObjectID;
 
-              var tweet = { "message": request.payload.tweet.message };
+              var tweet = { 
+                "message": request.payload.tweet.message,
+                "user_id": ObjectId(session.user_id)
+              };
 
               db.collection('tweets').insert(tweet, function(err, writeResult) {
                 if (err) { return reply('Internal MongoDB error', err); }

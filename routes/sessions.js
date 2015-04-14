@@ -42,7 +42,10 @@ exports.register = function(server, options, next) {
                         return reply('Internal MongoDB error', err);
                       }
 
-                      request.session.set('hapi_twitter_session', { session_hash: hash });
+                      request.session.set('hapi_twitter_session', { 
+                        "session_hash": hash,
+                        "user_id": userMongo._id
+                      });
                       return reply({ "message:": "Authenticated" });
                     });
 
