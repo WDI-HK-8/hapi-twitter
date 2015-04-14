@@ -43,7 +43,8 @@ exports.register = function(server, options, next) {
           var user = {
             username: request.payload.user.username,
             email:    request.payload.user.email,
-            password: request.payload.user.password
+            password: request.payload.user.password,
+            name:     request.payload.user.name
           };
 
           var uniqUserQuery = { $or: [{username: user.username}, {email: user.email}] };
@@ -52,7 +53,7 @@ exports.register = function(server, options, next) {
             if (userExist) {
               return reply('Error: Username already exist', err);
             }
-            
+
             Bcrypt.genSalt(10, function(err, salt) {
               Bcrypt.hash(user.password, salt, function(err, hash) {
                 user.password = hash;
@@ -73,7 +74,8 @@ exports.register = function(server, options, next) {
               // Required, Limited to 20 chars
               username: Joi.string().max(20).required(),
               email:    Joi.string().email().max(50).required(),
-              password: Joi.string().min(5).max(20).required()
+              password: Joi.string().min(5).max(20).required(),
+              name:     Joi.string().min(3).max(20).required()
             }
           }
         }
