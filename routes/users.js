@@ -28,9 +28,9 @@ exports.register = function(server, options, next) {
         var ObjectId = request.server.plugins['hapi-mongodb'].ObjectID;
 
         db.collection('users').findOne({ "username": username }, function(err, user) {
-            if (err) { return reply('Internal MongoDB error', err); }
+          if (err) { return reply('Internal MongoDB error', err); }
 
-            reply(user);
+          reply(user);
         })
       }
     },
@@ -54,21 +54,20 @@ exports.register = function(server, options, next) {
             if (userExist) {
               return reply('Error: Username already exist', err);
             }
-              Bcrypt.genSalt(10, function(err, salt) {
-                Bcrypt.hash(user.password, salt, function(err, hash) {
-                  user.password = hash;
+            
+            Bcrypt.genSalt(10, function(err, salt) {
+              Bcrypt.hash(user.password, salt, function(err, hash) {
+                user.password = hash;
 
-                  // Store hash in your password DB.
-                  db.collection('users').insert(user, function(err, doc) {
-                    if (err) { return reply('Internal MongoDB error', err); }
+                // Store hash in your password DB.
+                db.collection('users').insert(user, function(err, doc) {
+                  if (err) { return reply('Internal MongoDB error', err); }
 
-                    reply(doc);
-                  });
+                  reply(doc);
                 });
               });
-            }
+            });
           });
-
         },
         validate: {
           payload: {

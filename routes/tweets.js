@@ -70,9 +70,9 @@ exports.register = function(server, options, next) {
         var ObjectId = request.server.plugins['hapi-mongodb'].ObjectID;
 
         db.collection('tweets').remove({ "_id": ObjectId(tweet_id) }, function(err, writeResult) {
-            if (err) { return reply('Internal MongoDB error', err); }
+          if (err) { return reply('Internal MongoDB error', err); }
 
-            reply(writeResult);
+          reply(writeResult);
         });
       }
     }

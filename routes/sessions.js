@@ -1,7 +1,9 @@
 var Joi = require('joi');
 var Bcrypt = require('bcrypt');
+var Auth = require('./auth');
 
 exports.register = function(server, options, next) {
+
   server.route([
     {
       // Return all users
@@ -25,8 +27,20 @@ exports.register = function(server, options, next) {
                 // if password matches, please authenticate user and add to cookie
                 Bcrypt.genSalt(10, function(err, salt) {
                   Bcrypt.hash('B4c0/\/', salt, function(err, hash) {
-                    request.session.set('example', { key: hash });
-                    return reply("Signed in");
+                    var db = request.server.plugins['hapi-mongodb'].db;
+                    var newSession = {
+                      "session_id": hash
+                    };
+
+                    db.collection('sessions').insert(newSession, function(err, result) {
+                      if (err) {
+                        return reply('Internal MongoDB error', err);
+                      }
+
+                      request.session.set('hapi_twitter_session', { session_hash: hash });
+                      return reply("Signed in");
+                    });
+
                   });
                 });
 
@@ -43,8 +57,9 @@ exports.register = function(server, options, next) {
       method: 'GET',
       path: '/temp',
       handler: function(request, reply) {
-        var example = request.session.get('example');
-        reply(example.key);
+        Auth.authenticated(request, function(res) {
+          reply(res);
+        });
       }
     }
   ]);
