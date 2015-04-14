@@ -13,6 +13,12 @@ $ heroku create
 $ git push heroku master
 ```
 
+## Instructions (step-by-step)
+- [Getting Started](instructions/getting_started.md)
+- [Users](instructions/users.md)
+- [Sessions](instructions/sessions.md)
+- [Tweets](instructions/tweets.md)
+
 ## API Documentation
 
 ### [Tweets](#tweets)

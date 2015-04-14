@@ -23,9 +23,7 @@ exports.register = function(server, options, next) {
       path: '/users/{username}',
       handler: function(request, reply) {
         var username = encodeURIComponent(request.params.username);
-
         var db = request.server.plugins['hapi-mongodb'].db;
-        var ObjectId = request.server.plugins['hapi-mongodb'].ObjectID;
 
         db.collection('users').findOne({ "username": username }, function(err, user) {
           if (err) { return reply('Internal MongoDB error', err); }
