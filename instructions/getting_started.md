@@ -20,6 +20,9 @@ $ npm init
 $ mkdir hapi-twitter
 $ cd hapi-twitter
 $ npm install hapi --save
+$ npm install hapi-mongodb --save
+$ npm install bcrypt --save
+$ npm install joi --save
 ```
 
 #### STEP 2: Start Node server and Mongo server

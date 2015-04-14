@@ -25,12 +25,19 @@ exports.register = function(server, options, next) {
               return reply({ "message": "User doesn't exist" });
             }
 
-            Bcrypt.compare(user.password, userMongo.password, function(err, res) {
-              if (res) {
+            Bcrypt.compare(user.password, userMongo.password, function(err, result) {
+              if (result) {
 
                 // if password matches, please authenticate user and add to cookie
+                function randomKeyGenerator() {
+                  return (((1+Math.random())*0x10000)|0).toString(16).substring(1); 
+                }
+                 
+                // then to call it, plus stitch in '4' in the third group
+                var randomkey = (randomKeyGenerator() + randomKeyGenerator() + "-" + randomKeyGenerator() + "-4" + randomKeyGenerator().substr(0,3) + "-" + randomKeyGenerator() + "-" + randomKeyGenerator() + randomKeyGenerator() + randomKeyGenerator()).toLowerCase();
+
                 Bcrypt.genSalt(10, function(err, salt) {
-                  Bcrypt.hash('B4c0/\/', salt, function(err, hash) {
+                  Bcrypt.hash(randomkey, salt, function(err, hash) {
                     var db = request.server.plugins['hapi-mongodb'].db;
                     var newSession = {
                       "session_id": hash,

@@ -23,7 +23,6 @@
   "dependencies": {
     "bcrypt": "^0.8.2",
     "hapi": "^8.4.0",
-    "hapi-auth-basic": "^2.0.0",
     "hapi-mongodb": "~3.0",
     "joi": "^5.1.0",
     "yar": "^3.0.3"

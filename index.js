@@ -9,7 +9,7 @@ server.connection({
   }
 });
 
-var options = {
+var yarOptions = {
   cookieOptions: {
     password: process.env.COOKIE_PASSWORD || 'password',
     isSecure: false
@@ -18,7 +18,7 @@ var options = {
 
 server.register({
   register: require('yar'),
-  options: options
+  options: yarOptions
 }, function (err) { });
 
 var plugins = [
