@@ -11,7 +11,7 @@ module.exports.authenticated = function(request, callback) {
     });
   }
 
-  db.collection('sessions').findOne({ "session_id": session.session_hash }, function(err, result) {
+  db.collection('sessions').findOne({ "session_id": session.session_id }, function(err, result) {
     if (result === null) {
       return callback({
         "authenticated": false,

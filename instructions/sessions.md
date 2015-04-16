@@ -14,7 +14,7 @@ $ npm install yar --save
 Add to `plugins`
 
 ```js
-{ register: require('./routes/sessions.js') }
+{ register: require('./routes/sessions.js') } 
 ```
 
 #### STEP 2: Include jar for reading and creating Cookies in the browser

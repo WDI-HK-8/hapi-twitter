@@ -9,18 +9,6 @@ server.connection({
   }
 });
 
-var yarOptions = {
-  cookieOptions: {
-    password: process.env.COOKIE_PASSWORD || 'password',
-    isSecure: false
-  }
-};
-
-server.register({
-  register: require('yar'),
-  options: yarOptions
-}, function (err) { });
-
 var plugins = [
   { register: require('./routes/tweets.js') },
   { register: require('./routes/users.js') },
@@ -32,6 +20,15 @@ var plugins = [
         "db": {
           "native_parser": false
         }
+      }
+    }
+  },
+  {
+    register: require('yar'),
+    options: {
+      cookieOptions: {
+        password: process.env.COOKIE_PASSWORD || 'password',
+        isSecure: false
       }
     }
   }
