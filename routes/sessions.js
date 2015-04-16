@@ -98,6 +98,6 @@ exports.register = function(server, options, next) {
 };
 
 exports.register.attributes = {
-  name: 'static-pages-route',
+  name: 'sessions-route',
   version: '0.0.1'
 };

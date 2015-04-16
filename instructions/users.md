@@ -1,6 +1,29 @@
 ## STEPS BY STEP GUIDE
 #### User
 
+#### STEP 0: Require users.js and MongoDB
+
+```
+$ mongod
+```
+
+```js
+// Require MongoDB and users.js for User CRUD
+var plugins = [
+  { register: require('./routes/users.js') },
+  { register: require('hapi-mongodb'),
+    options: {
+      "url": process.env.MONGOLAB_URI || "mongodb://127.0.0.1:27017/hapi-twitter",
+      "settings": {
+        "db": {
+          "native_parser": false
+        }
+      }
+    }
+  }
+];
+```
+
 #### STEP 1: List all users
 ```js
 // routes/users.js
@@ -9,22 +32,7 @@ var Joi = require('joi'); // What do JOI do? Object schema validation
 var Bcrypt = require('bcrypt'); // What is Bcrypt? Encryption / Hashing function
 
 exports.register = function(server, options, next) {
-  server.route([
-    {
-      // Retrieve all users
-      method: 'GET',
-      path: '/users',
-      handler: function(request, reply) {
-        var db = request.server.plugins['hapi-mongodb'].db;
-
-        db.collection('users').find().toArray(function(err, users) {
-          if (err) { return reply('Internal MongoDB error', err); }
-
-          reply(users);
-        });
-      }
-    }
-  ]);
+  // include routes
 
   next();
 };
@@ -34,6 +42,26 @@ exports.register.attributes = {
   version: '0.0.1'
 };
 
+```
+
+```js
+// include routes
+server.route([
+  {
+    // Retrieve all users
+    method: 'GET',
+    path: '/users',
+    handler: function(request, reply) {
+      var db = request.server.plugins['hapi-mongodb'].db;
+
+      db.collection('users').find().toArray(function(err, users) {
+        if (err) { return reply('Internal MongoDB error', err); }
+
+        reply(users);
+      });
+    }
+  }
+]);
 ```
 
 #### STEP 2: Create a new user v1 (basic)
