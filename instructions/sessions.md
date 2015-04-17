@@ -107,38 +107,34 @@ Bcrypt.compare(data, encrypted, callback)
 // If password matches, please authenticate user and add to cookie
 if (result) {
 
+  // if password matches, please authenticate user and add to cookie
   function randomKeyGenerator() {
     return (((1+Math.random())*0x10000)|0).toString(16).substring(1); 
   }
-   
-  // Generate a random key
-  var randomkey = (randomKeyGenerator() + randomKeyGenerator() + "-" + randomKeyGenerator() + "-4" + randomKeyGenerator().substr(0,3) + "-" + randomKeyGenerator() + "-" + randomKeyGenerator() + randomKeyGenerator() + randomKeyGenerator()).toLowerCase();
 
-  // Hash the random key with salt using Bcrypt
-  Bcrypt.genSalt(10, function(err, salt) {
-    Bcrypt.hash(randomkey, salt, function(err, hash) {
-      var db = request.server.plugins['hapi-mongodb'].db;
-      var newSession = {
-        "session_id": hash,
-        "user_id": userMongo._id
-      };
+  // Generate a random string
+  var randomKey = randomKeyGenerator();
 
-      // Create a Session in the database
-      db.collection('sessions').insert(newSession, function(err, result) {
-        if (err) {
-          return reply('Internal MongoDB error', err);
-        }
+  var db = request.server.plugins['hapi-mongodb'].db;
+  
+  var newSession = {
+    "session_id": randomKey,
+    "user_id": userMongo._id
+  };
 
-        // Store the Session information in the browser Cookie
+  db.collection('sessions').insert(newSession, function(err, result) {
+    if (err) {
+      return reply('Internal MongoDB error', err);
+    }
 
-        return reply({ "message:": "Authenticated" });
-      });
+    // Store the Session information in the browser Cookie
 
-    });
+    return reply({ "message:": "Authenticated" });
   });
+
 } else {
   reply({ message: "Not authorized" });
-};
+}
 ```
 
 
@@ -146,7 +142,7 @@ if (result) {
 ```js
 // Store the Session information in the browser Cookie
 request.session.set('hapi_twitter_session', { 
-  "session_hash": hash,
+  "session_id": randomKey,
   "user_id": userMongo._id
 });
 ```
@@ -165,7 +161,7 @@ request.session.set('hapi_twitter_session', {
       return reply({ "message": "Already logged out" });
     }
 
-    db.collection('sessions').remove({ "session_id": session.session_hash }, function(err, writeResult) {
+    db.collection('sessions').remove({ "session_id": session.session_id }, function(err, writeResult) {
       if (err) { return reply('Internal MongoDB error', err); }
 
       reply(writeResult);
@@ -209,13 +205,51 @@ module.exports.authenticated = function(request, callback) {
     return callback({ "authenticated": false, "message": "Unauthorized" });
   }
 
-  db.collection('sessions').findOne({ "session_id": session.session_hash }, function(err, result) {
+  db.collection('sessions').findOne({ "session_id": session.session_id }, function(err, result) {
     if (result === null) {
-      return callback({ "authenticated": false, "message": "Unauthorized" });
+      return callback({ 
+        "authenticated": false,
+        "message": "Unauthorized. Session exists on browser."
+      });
     } else {
-      return callback({ "authenticated": true, "message": "Authorized "});
+      return callback({ 
+        "authenticated": true,
+        "message": "Authorized. Session exists on browser."
+      });
     }
   });
 };
 ```
 
+#### Jquery AJAX Examples
+
+```js
+$.ajax({
+  type: "POST",
+  url: "http://localhost:3000/sessions",
+  data: {
+    user: {
+      username: "harry",
+      password: "harryharry"
+    }
+  },
+  dataType: 'JSON',
+  xhrFields: {
+    withCredentials: true
+  },
+  success: function(response){
+    console.log("create session / logged in", response);
+  }
+});
+
+$.ajax({
+  type: "GET",
+  url: "http://localhost:3000/authenticated",
+  xhrFields: {
+    withCredentials: true
+  },
+  success: function(response){
+    console.log("is it", response);
+  }
+});
+```

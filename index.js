@@ -8,7 +8,7 @@ server.connection({
     cors: {
       headers: ["Access-Control-Allow-Credentials"],
       credentials: true
-    },
+    }
   }
 });
 

@@ -46,7 +46,10 @@ server.connection({
   host: '0.0.0.0',
   port: process.env.PORT || 3000, // What is process.env.PORT? It's an environment variable prepared by Heroku Deployment
   routes: {
-    cors: true // Cross-origin resource sharing (CORS) is a mechanism that enables many resources (e.g. fonts, JavaScript, etc.) on a web page to be requested from another domain outside the domain from which the resource originated.
+    cors: {
+      headers: ["Access-Control-Allow-Credentials"],
+      credentials: true
+    } // Cross-origin resource sharing (CORS) is a mechanism that enables many resources (e.g. fonts, JavaScript, etc.) on a web page to be requested from another domain outside the domain from which the resource originated.
   }
 });
 

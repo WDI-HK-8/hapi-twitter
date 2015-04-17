@@ -49,12 +49,13 @@ exports.register = function(server, options, next) {
                   "session_id": randomKey,
                   "user_id": userMongo._id
                 });
+                
                 return reply({ "message:": "Authenticated" });
               });
 
             } else {
               reply({ message: "Not authorized" });
-            };
+            }
           });
         })
       }
