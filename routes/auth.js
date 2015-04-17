@@ -12,16 +12,47 @@ module.exports.authenticated = function(request, callback) {
   }
 
   db.collection('sessions').findOne({ "session_id": session.session_id }, function(err, result) {
+    console.log(result);
     if (result === null) {
       return callback({
         "authenticated": false,
-        "message": "Unauthorized"
+        "message": "Unauthorized. Session exists on browser."
       });
     } else {
       return callback({
         "authenticated": true,
-        "message": "Authorized"
+        "message": "Authorized. Session exists on browser."
       });
     }
   });
 };
+
+// An AJAX Example
+// $.ajax({
+//   type: "POST",
+//   url: "http://localhost:3000/sessions",
+//   data: {
+//     user: {
+//       username: "harry",
+//       password: "harryharry"
+//     }
+//   },
+//   dataType: 'JSON',
+//   xhrFields: {
+//     withCredentials: true
+//   },
+//   success: function(response){
+//     console.log("create session / logged in", response);
+//   }
+// });
+
+// $.ajax({
+//   type: "GET",
+//   url: "http://localhost:3000/authenticated",
+//   xhrFields: {
+//     withCredentials: true
+//   },
+//   success: function(response){
+//     console.log("is it", response);
+//   }
+// });
