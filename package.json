@@ -22,9 +22,11 @@
   "homepage": "https://github.com/WDI-HK-7/hapi-twitter",
   "dependencies": {
     "bcrypt": "^0.8.2",
+    "handlebars": "^3.0.3",
     "hapi": "^8.4.0",
     "hapi-mongodb": "~3.0",
     "joi": "^5.1.0",
+    "path": "^0.11.14",
     "yar": "^3.0.3"
   }
 }
