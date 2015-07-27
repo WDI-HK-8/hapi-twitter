@@ -55,7 +55,6 @@ server.connection({
   }
 });
 
-
 // Require MongoDB
 var plugins = [
   { register: require('hapi-mongodb'),
@@ -69,6 +68,7 @@ var plugins = [
     }
   }
 ];
+
 // Start server if there's no error in code
 server.register(plugins, function (err) {
   if (err) {
