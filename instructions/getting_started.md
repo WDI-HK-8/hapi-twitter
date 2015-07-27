@@ -53,6 +53,19 @@ server.connection({
   }
 });
 
+// Require MongoDB
+var plugins = [
+  { register: require('hapi-mongodb'),
+    options: {
+      "url": process.env.MONGOLAB_URI || "mongodb://127.0.0.1:27017/hapi-twitter",
+      "settings": {
+        "db": {
+          "native_parser": false
+        }
+      }
+    }
+  }
+];
 // Start server if there's no error in code
 server.register(plugins, function (err) {
   if (err) {
