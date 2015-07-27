@@ -5,7 +5,7 @@
 
   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
   <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="public/index.js"></script>
+  <script type="text/javascript" src="public/posts.js"></script>
 
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 </head>
@@ -14,7 +14,15 @@
     <div class="row">
       <h1>Hello World!</h1>
 
-      <h3>Twitter</h3>
+
+      <form id="tweet-submit">
+        <input type="text" name="message" placeholder="message">
+        <input type="submit">
+      </form>
+
+      <h3>Tweets</h3>
+
+      <div id="tweets"></div>
     </div>
   </div>
 </body>

@@ -27,7 +27,7 @@ exports.register = function(server, options, next) {
 
               // if password matches, please authenticate user and add to cookie
               function randomKeyGenerator() {
-                return (((1+Math.random())*0x10000)|0).toString(16).substring(1); 
+                return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
               }
    
               // Generate a random string
@@ -50,7 +50,7 @@ exports.register = function(server, options, next) {
                   "user_id": userMongo._id
                 });
                 
-                return reply({ "message:": "Authenticated" });
+                return reply({ "authenticated": true });
               });
 
             } else {
