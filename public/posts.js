@@ -6,9 +6,16 @@ $(document).ready(function(){
       success: function(response){
         var html = '';
 
-        response.forEach(function (tweet) {
-          html += '<div>';
-          html +=   tweet.message;
+        response.reverse().forEach(function (tweet) {
+          html += '<div class="list-group">';
+          html +=   '<a href="#" class="list-group-item">';
+          html +=     '<h4 class="list-group-item-heading">';
+          html +=       tweet.message;
+          html +=     '</h4>';
+          html +=     '<p class="list-group-item-text"> by '
+          html +=       tweet.user_id;
+          html +=     '</p>';
+          html +=   '</a>';
           html += '</div>';
         });
 
@@ -30,7 +37,7 @@ $(document).ready(function(){
       url: 'tweets',
       data: {
         tweet: {
-          message: $('#tweet-submit > input[name="message"]').val()
+          message: $('#tweet-submit input[name="message"]').val()
         }
       },
       dataType: 'JSON',

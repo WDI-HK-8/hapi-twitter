@@ -1,6 +1,4 @@
 $(document).ready(function(){
-  // var host = process.env.APP_URL || 'http://localhost:3000';
-
   $('#signup').submit(function(){
     event.preventDefault();
 
@@ -10,7 +8,6 @@ $(document).ready(function(){
     var password = $('#signup > input[name="password"]');
 
     $.ajax({
-      context: window,
       type: 'POST',
       url: 'users',
       data: {
@@ -38,7 +35,6 @@ $(document).ready(function(){
     var password = $('#signin > input[name="password"]');
 
     $.ajax({
-      context: window,
       type: 'POST',
       url: 'sessions',
       data: {
@@ -60,5 +56,15 @@ $(document).ready(function(){
         console.log(xhr.responseText);
       }
     });
+  });
+
+  $.ajax({
+    type: 'GET',
+    url: 'authenticated',
+    success: function(response){
+      if (response.authenticated) {
+        // window.location.href = "posts";
+      }
+    }
   });
 });

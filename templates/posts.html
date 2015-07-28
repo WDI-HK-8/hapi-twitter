@@ -10,14 +10,28 @@
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 </head>
 <body>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">
+         Hapi Twitter
+        </a>
+        <p class="navbar-text navbar-right">Not signed in<a href="#" class="navbar-link"></a></p>
+      </div>
+    </div>
+  </nav>
+
   <div class="container">
     <div class="row">
-      <h1>Hello World!</h1>
-
-
-      <form id="tweet-submit">
-        <input type="text" name="message" placeholder="message">
-        <input type="submit">
+      <form id="tweet-submit" class="form-group">
+        <div class="row">
+          <div class="col-xs-11">
+            <input type="text" class="form-control" name="message" placeholder="Write your tweet here...">
+          </div>
+          <div class="col-xs-1">
+            <input type="submit" value="Tweet" class="btn btn-default">
+          </div>
+        </div>
       </form>
 
       <h3>Tweets</h3>
