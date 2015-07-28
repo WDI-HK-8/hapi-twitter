@@ -22,7 +22,9 @@
   },
   "homepage": "https://github.com/harrychenca/hapi-twitter-class#readme",
   "dependencies": {
+    "handlebars": "^3.0.3",
     "hapi": "^8.8.0",
-    "hapi-mongodb": "^3.0.0"
+    "hapi-mongodb": "^3.0.0",
+    "path": "^0.11.14"
   }
 }
