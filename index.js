@@ -29,7 +29,8 @@ var plugins = [
   { register: require('./routes/static-pages.js') },
   { register: require('./routes/users.js') },
   { register: require('./routes/sessions.js') },
-  { 
+  { register: require('./routes/tweets.js') },
+  {
     register: require('yar'),
     options: {
       cookieOptions: {
@@ -42,7 +43,7 @@ var plugins = [
   {
     register: require('hapi-mongodb'),
     options: {
-      url: 'mongodb://127.0.0.1:27017/hapi-twitter',  
+      url: 'mongodb://127.0.0.1:27017/hapi-twitter',
       settings: {
         db: {
           native_parser: false
